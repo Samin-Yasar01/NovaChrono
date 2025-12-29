@@ -7,7 +7,10 @@ import { Inventory, InventoryDocument } from './inventory.schema';
 
 @Injectable()
 export class InventoryService {
-  constructor(@InjectModel(Inventory.name) private inventoryModel: Model<InventoryDocument>) { }
+  constructor(
+    @InjectModel(Inventory.name)
+    private inventoryModel: Model<InventoryDocument>,
+  ) {}
 
   async create(createInventoryDto: CreateInventoryDto): Promise<Inventory> {
     const createdInventory = new this.inventoryModel(createInventoryDto);
@@ -29,13 +32,20 @@ export class InventoryService {
   async findByProductId(productId: string): Promise<Inventory> {
     const inventory = await this.inventoryModel.findOne({ productId }).exec();
     if (!inventory) {
-      throw new NotFoundException(`Inventory for product ${productId} not found`);
+      throw new NotFoundException(
+        `Inventory for product ${productId} not found`,
+      );
     }
     return inventory;
   }
 
-  async update(id: string, updateInventoryDto: UpdateInventoryDto): Promise<Inventory> {
-    const updatedInventory = await this.inventoryModel.findByIdAndUpdate(id, updateInventoryDto, { new: true }).exec();
+  async update(
+    id: string,
+    updateInventoryDto: UpdateInventoryDto,
+  ): Promise<Inventory> {
+    const updatedInventory = await this.inventoryModel
+      .findByIdAndUpdate(id, updateInventoryDto, { new: true })
+      .exec();
     if (!updatedInventory) {
       throw new NotFoundException(`Inventory item #${id} not found`);
     }
@@ -43,7 +53,9 @@ export class InventoryService {
   }
 
   async remove(id: string): Promise<Inventory> {
-    const deletedInventory = await this.inventoryModel.findByIdAndDelete(id).exec();
+    const deletedInventory = await this.inventoryModel
+      .findByIdAndDelete(id)
+      .exec();
     if (!deletedInventory) {
       throw new NotFoundException(`Inventory item #${id} not found`);
     }

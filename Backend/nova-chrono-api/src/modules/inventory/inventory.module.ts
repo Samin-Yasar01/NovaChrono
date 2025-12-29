@@ -6,9 +6,11 @@ import { Inventory, InventorySchema } from './inventory.schema';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: Inventory.name, schema: InventorySchema }]),
+    MongooseModule.forFeature([
+      { name: Inventory.name, schema: InventorySchema },
+    ]),
   ],
   controllers: [InventoryController],
   providers: [InventoryService],
 })
-export class InventoryModule { }
+export class InventoryModule {}
