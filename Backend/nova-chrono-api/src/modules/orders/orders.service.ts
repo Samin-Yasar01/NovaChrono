@@ -7,7 +7,9 @@ import { Order, OrderDocument } from './orders.schema';
 
 @Injectable()
 export class OrdersService {
-  constructor(@InjectModel(Order.name) private orderModel: Model<OrderDocument>) { }
+  constructor(
+    @InjectModel(Order.name) private orderModel: Model<OrderDocument>,
+  ) {}
 
   async create(createOrderDto: CreateOrderDto): Promise<Order> {
     const createdOrder = new this.orderModel(createOrderDto);
@@ -27,7 +29,9 @@ export class OrdersService {
   }
 
   async update(id: string, updateOrderDto: UpdateOrderDto): Promise<Order> {
-    const existingOrder = await this.orderModel.findByIdAndUpdate(id, updateOrderDto, { new: true }).exec();
+    const existingOrder = await this.orderModel
+      .findByIdAndUpdate(id, updateOrderDto, { new: true })
+      .exec();
     if (!existingOrder) {
       throw new NotFoundException(`Order #${id} not found`);
     }

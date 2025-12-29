@@ -11,4 +11,4 @@ import { Order, OrderSchema } from './orders.schema';
   controllers: [OrdersController],
   providers: [OrdersService],
 })
-export class OrdersModule { }
+export class OrdersModule {}

@@ -7,14 +7,14 @@ import { Order, OrderSchema } from '../orders/orders.schema';
 import { Category, CategorySchema } from '../categories/categories.schema';
 
 @Module({
-    imports: [
-        MongooseModule.forFeature([
-            { name: Product.name, schema: ProductSchema },
-            { name: Order.name, schema: OrderSchema },
-            { name: Category.name, schema: CategorySchema },
-        ]),
-    ],
-    controllers: [AdminController],
-    providers: [AdminService],
+  imports: [
+    MongooseModule.forFeature([
+      { name: Product.name, schema: ProductSchema },
+      { name: Order.name, schema: OrderSchema },
+      { name: Category.name, schema: CategorySchema },
+    ]),
+  ],
+  controllers: [AdminController],
+  providers: [AdminService],
 })
-export class AdminModule { }
+export class AdminModule {}
