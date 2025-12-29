@@ -8,8 +8,8 @@ export class ProductsService {
     // Service methods will go here
     constructor(@InjectModel('Product') private productModel: Model<Product>) { }
 
-    async createProduct(name: string, description: string, price: number) {
-        const product = new this.productModel({ name, description, price });
+    async createProduct(createProductDto: any) {
+        const product = new this.productModel(createProductDto);
         return product.save();
     }
 
@@ -19,6 +19,22 @@ export class ProductsService {
 
     async getProductById(id: string): Promise<Product> {
         const product = await this.productModel.findById(id).exec();
+        if (!product) {
+            throw new NotFoundException('Product not found');
+        }
+        return product;
+    }
+
+    async updateProduct(id: string, updateProductDto: any): Promise<Product> {
+        const product = await this.productModel.findByIdAndUpdate(id, updateProductDto, { new: true }).exec();
+        if (!product) {
+            throw new NotFoundException('Product not found');
+        }
+        return product;
+    }
+
+    async deleteProduct(id: string): Promise<Product> {
+        const product = await this.productModel.findByIdAndDelete(id).exec();
         if (!product) {
             throw new NotFoundException('Product not found');
         }
