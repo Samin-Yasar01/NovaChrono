@@ -3,7 +3,7 @@
 import { useCart } from '@/context/cart-context';
 import Button from '@/components/ui/button';
 import { createOrder } from '@/actions/orders/service';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function CheckoutPage() {
@@ -17,8 +17,13 @@ export default function CheckoutPage() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState('');
 
+    useEffect(() => {
+        if (cart.length === 0) {
+            router.push('/cart');
+        }
+    }, [cart, router]);
+
     if (cart.length === 0) {
-        router.push('/cart');
         return null;
     }
 
@@ -38,7 +43,6 @@ export default function CheckoutPage() {
                     price: item.price
                 })),
                 totalAmount: cartTotal,
-                status: 'pending' // Default status
             };
 
             await createOrder(orderData);
