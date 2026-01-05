@@ -1,4 +1,4 @@
-import { IsString, IsNumber, Min, Length } from 'class-validator';
+import { IsString, IsNumber, Min, Length, IsMongoId, IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateProductDto {
@@ -28,4 +28,14 @@ export class CreateProductDto {
   @IsNumber()
   @Min(1)
   price: number;
+
+  @ApiProperty({
+    description: 'The category ID of the product',
+    example: '60d1b2c3d4e5f6a7b8c9d0e1',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  @IsMongoId()
+  category?: string;
 }

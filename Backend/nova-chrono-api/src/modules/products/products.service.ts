@@ -6,7 +6,7 @@ import { Product } from './products.schema';
 @Injectable()
 export class ProductsService {
   // Service methods will go here
-  constructor(@InjectModel('Product') private productModel: Model<Product>) {}
+  constructor(@InjectModel('Product') private productModel: Model<Product>) { }
 
   async createProduct(createProductDto: any) {
     const product = new this.productModel(createProductDto);
@@ -14,11 +14,11 @@ export class ProductsService {
   }
 
   async getAllProducts(): Promise<Product[]> {
-    return this.productModel.find().exec();
+    return this.productModel.find().populate('category').exec();
   }
 
   async getProductById(id: string): Promise<Product> {
-    const product = await this.productModel.findById(id).exec();
+    const product = await this.productModel.findById(id).populate('category').exec();
     if (!product) {
       throw new NotFoundException('Product not found');
     }
@@ -28,6 +28,7 @@ export class ProductsService {
   async updateProduct(id: string, updateProductDto: any): Promise<Product> {
     const product = await this.productModel
       .findByIdAndUpdate(id, updateProductDto, { new: true })
+      .populate('category')
       .exec();
     if (!product) {
       throw new NotFoundException('Product not found');

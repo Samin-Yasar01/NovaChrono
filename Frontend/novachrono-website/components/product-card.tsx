@@ -11,6 +11,7 @@ interface Product {
     name: string;
     price: number;
     description?: string;
+    category?: { _id: string; name: string } | string;
     // image field missing in backend schema, using placeholder
 }
 
@@ -53,7 +54,9 @@ const ProductCard = ({ product }: { product: Product }) => {
                         {product.name}
                     </h3>
                     <div className="flex items-center justify-between">
-                        <span className="text-gray-400 text-sm">Luxury Series</span>
+                        <span className="text-gray-400 text-sm">
+                            {typeof product.category === 'object' ? product.category?.name : 'Luxury Series'}
+                        </span>
                         <span className="text-white font-semibold tracking-wide">
                             ${product.price ? product.price.toLocaleString() : 'N/A'}
                         </span>
