@@ -2,7 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { mutate } from 'swr';
 import { createProduct, updateProduct } from '@/actions/products/service';
+import { getCategories } from '@/actions/categories/service';
+import { Category } from '@/actions/categories/types';
 import { Loader2, Save, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
@@ -22,9 +25,27 @@ export default function ProductForm({ initialData, isEdit = false }: ProductForm
         name: '',
         price: '',
         description: '',
+        category: '',
     });
+    const [categories, setCategories] = useState<Category[]>([]);
+    const [isLoadingCategories, setIsLoadingCategories] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const data = await getCategories();
+                setCategories(data);
+            } catch (err) {
+                console.error("Failed to load categories", err);
+            } finally {
+                setIsLoadingCategories(false);
+            }
+        };
+
+        fetchCategories();
+    }, []);
 
     useEffect(() => {
         if (initialData) {
@@ -32,6 +53,12 @@ export default function ProductForm({ initialData, isEdit = false }: ProductForm
                 name: initialData.name,
                 price: initialData.price.toString(),
                 description: initialData.description || '',
+                // @ts-ignore - handling backend populate vs string id. 
+                // If populated, it might be an object, check logic or ensure API sends what we expect. 
+                // For editing, we usually need the ID.
+                category: typeof (initialData as any).category === 'object'
+                    ? (initialData as any).category?._id
+                    : (initialData as any).category || '',
             });
         }
     }, [initialData]);
@@ -46,6 +73,7 @@ export default function ProductForm({ initialData, isEdit = false }: ProductForm
                 name: formData.name,
                 price: parseFloat(formData.price),
                 description: formData.description,
+                category: formData.category || undefined, // Send undefined if empty to skip or let backend handle simple string optional
             };
 
             if (isEdit && initialData?._id) {
@@ -54,8 +82,8 @@ export default function ProductForm({ initialData, isEdit = false }: ProductForm
                 await createProduct(payload);
             }
 
+            await mutate('products-list'); // Invalidate cache to force re-fetch on list page
             router.push('/admin/products');
-            router.refresh();
         } catch (err: any) {
             console.error(err);
             setError(err.response?.data?.message || 'Failed to save product');
@@ -110,6 +138,26 @@ export default function ProductForm({ initialData, isEdit = false }: ProductForm
                         className="w-full rounded-lg border border-gray-300 dark:border-zinc-700 bg-transparent px-4 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder="0.00"
                     />
+                </div>
+
+                <div className="space-y-2">
+                    <label htmlFor="category" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Category
+                    </label>
+                    <select
+                        id="category"
+                        value={formData.category}
+                        onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                        disabled={isLoadingCategories}
+                        className="w-full rounded-lg border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-4 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+                    >
+                        <option value="">Select a category...</option>
+                        {categories.map((cat) => (
+                            <option key={cat._id} value={cat._id}>
+                                {cat.name}
+                            </option>
+                        ))}
+                    </select>
                 </div>
 
                 <div className="space-y-2">

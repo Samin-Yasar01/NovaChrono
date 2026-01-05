@@ -11,6 +11,7 @@ interface Product {
     name: string;
     price: number;
     description?: string;
+    category?: { _id: string; name: string } | string; // Can be object (populated) or string
     createdAt: string;
 }
 
@@ -68,6 +69,7 @@ export default function ProductsPage() {
                         <thead className="bg-gray-50 dark:bg-zinc-800/50 text-gray-500 dark:text-gray-400">
                             <tr>
                                 <th className="px-6 py-3 font-medium">Name</th>
+                                <th className="px-6 py-3 font-medium">Category</th>
                                 <th className="px-6 py-3 font-medium">Description</th>
                                 <th className="px-6 py-3 font-medium">Price</th>
                                 <th className="px-6 py-3 font-medium text-right">Actions</th>
@@ -97,6 +99,9 @@ export default function ProductsPage() {
                                     <tr key={product._id} className="hover:bg-gray-50 dark:hover:bg-zinc-800/50">
                                         <td className="px-6 py-4 font-medium text-gray-900 dark:text-white">
                                             {product.name}
+                                        </td>
+                                        <td className="px-6 py-4 text-gray-500 dark:text-gray-400">
+                                            {typeof product.category === 'object' ? product.category?.name : 'Uncategorized'}
                                         </td>
                                         <td className="px-6 py-4 text-gray-500 dark:text-gray-400 max-w-xs truncate">
                                             {product.description || '-'}

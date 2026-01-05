@@ -23,7 +23,10 @@ export default function ShopPage() {
 
     const filteredProducts = activeCategory === 'all'
         ? products
-        : products?.filter((p: any) => p.category === activeCategory); // Adjust 'p.category' based on actual data shape
+        : products?.filter((p: any) => {
+            const productCategoryId = typeof p.category === 'object' ? p.category?._id : p.category;
+            return productCategoryId === activeCategory;
+        });
 
     if (productsLoading || categoriesLoading) {
         return (
