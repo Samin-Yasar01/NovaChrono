@@ -13,9 +13,11 @@ export default function CheckoutPage() {
         customerName: '',
         phone: '',
         address: '',
+        email: '',
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState('');
+    const [success, setSuccess] = useState(false);
 
     useEffect(() => {
         if (cart.length === 0) {
@@ -36,9 +38,11 @@ export default function CheckoutPage() {
             const orderData = {
                 customerName: formData.customerName,
                 phone: formData.phone,
+                email: formData.email,
                 address: formData.address,
                 items: cart.map(item => ({
                     productId: item._id,
+                    name: item.name,
                     quantity: item.quantity,
                     price: item.price
                 })),
@@ -47,7 +51,10 @@ export default function CheckoutPage() {
 
             await createOrder(orderData);
             clearCart();
-            router.push('/checkout/success');
+            setSuccess(true);
+            setTimeout(() => {
+                router.push('/checkout/success');
+            }, 3000);
 
         } catch (err) {
             console.error(err);
@@ -63,7 +70,14 @@ export default function CheckoutPage() {
                 <h1 className="text-3xl font-bold text-white mb-8 text-center">Checkout</h1>
 
                 <div className="bg-gunmetal-800 p-8 rounded-sm border border-white/5">
-                    <form onSubmit={handleSubmit} className="space-y-6">
+                    {success ? (
+                        <div className="text-center space-y-4">
+                            <div className="text-green-400 text-2xl font-bold">✓ Order Placed Successfully!</div>
+                            <p className="text-gray-300">A confirmation email has been sent to your email address and our team has been notified.</p>
+                            <p className="text-sm text-gray-400">Redirecting to success page...</p>
+                        </div>
+                    ) : (
+                        <form onSubmit={handleSubmit} className="space-y-6">
                         <div className="space-y-2">
                             <label className="text-sm font-medium text-gray-300">Full Name</label>
                             <input
@@ -85,6 +99,18 @@ export default function CheckoutPage() {
                                 placeholder="+1 234 567 890"
                                 value={formData.phone}
                                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                            />
+                        </div>
+
+                        <div className="space-y-2">
+                            <label className="text-sm font-medium text-gray-300">Email Address</label>
+                            <input
+                                required
+                                type="email"
+                                className="w-full bg-gunmetal-900 border border-white/10 rounded-sm p-3 text-white focus:outline-none focus:border-gold-500 transition-colors"
+                                placeholder="john@example.com"
+                                value={formData.email}
+                                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                             />
                         </div>
 
@@ -118,6 +144,7 @@ export default function CheckoutPage() {
                             </Button>
                         </div>
                     </form>
+                    )}
                 </div>
             </div>
         </div>

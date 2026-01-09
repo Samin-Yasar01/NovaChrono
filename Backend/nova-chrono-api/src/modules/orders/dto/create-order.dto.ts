@@ -55,6 +55,14 @@ export class CreateOrderDto {
   phone: string;
 
   @ApiProperty({
+    description: 'The email address of the customer',
+    example: 'john.doe@example.com',
+  })
+  @IsString()
+  @IsNotEmpty()
+  email: string;
+
+  @ApiProperty({
     description: 'The delivery address',
     example: '123 Main St, City, State 12345',
   })
