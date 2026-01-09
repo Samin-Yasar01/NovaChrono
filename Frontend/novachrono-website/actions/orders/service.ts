@@ -38,11 +38,15 @@ export const createOrder = async (orderData: any) => {
                         <h1 style="margin: 0; color: #d4af37;">NovaChrono</h1>
                         <h2 style="margin: 10px 0; color: #ffffff;">New Order Received</h2>
                     </div>
-                    
+
                     <div style="background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                         <h3 style="color: #333; border-bottom: 2px solid #d4af37; padding-bottom: 10px;">Customer Information</h3>
                         <table style="width: 100%; border-collapse: collapse;">
                             <tr>
+                                <td style="padding: 8px 0; font-weight: bold; color: #555;">Order ID:</td>
+                                <td style="padding: 8px 0; color: #d4af37; font-weight: bold;">#${result.id || result._id}</td>
+                            </tr>
+                            <tr style="background-color: #f9f9f9;">
                                 <td style="padding: 8px 0; font-weight: bold; color: #555;">Name:</td>
                                 <td style="padding: 8px 0; color: #333;">${orderData.customerName}</td>
                             </tr>
@@ -59,38 +63,63 @@ export const createOrder = async (orderData: any) => {
                                 <td style="padding: 8px 0; color: #333;">${orderData.address}</td>
                             </tr>
                         </table>
-                        
+
                         <h3 style="color: #333; border-bottom: 2px solid #d4af37; padding-bottom: 10px; margin-top: 30px;">Order Items</h3>
-                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
-                            <thead>
-                                <tr style="background-color: #1a1a1a; color: white;">
-                                    <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Product</th>
-                                    <th style="padding: 12px; text-align: center; border: 1px solid #ddd;">Quantity</th>
-                                    <th style="padding: 12px; text-align: right; border: 1px solid #ddd;">Price</th>
-                                    <th style="padding: 12px; text-align: right; border: 1px solid #ddd;">Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${orderData.items.map((item: any, index: number) => `
-                                    <tr style="background-color: ${index % 2 === 0 ? '#f9f9f9' : 'white'};">
-                                        <td style="padding: 12px; border: 1px solid #ddd; color: #333;">${item.name}</td>
-                                        <td style="padding: 12px; text-align: center; border: 1px solid #ddd; color: #333;">${item.quantity}</td>
-                                        <td style="padding: 12px; text-align: right; border: 1px solid #ddd; color: #333;">$${item.price.toFixed(2)}</td>
-                                        <td style="padding: 12px; text-align: right; border: 1px solid #ddd; color: #333; font-weight: bold;">$${(item.price * item.quantity).toFixed(2)}</td>
+
+                        <!-- Desktop Table (hidden on mobile) -->
+                        <div class="table-container" style="display: block; overflow-x: auto;">
+                            <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; min-width: 500px;">
+                                <thead>
+                                    <tr style="background-color: #1a1a1a; color: white;">
+                                        <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Product</th>
+                                        <th style="padding: 12px; text-align: center; border: 1px solid #ddd;">Qty</th>
+                                        <th style="padding: 12px; text-align: right; border: 1px solid #ddd;">Price</th>
+                                        <th style="padding: 12px; text-align: right; border: 1px solid #ddd;">Total</th>
                                     </tr>
-                                `).join('')}
-                            </tbody>
-                        </table>
-                        
+                                </thead>
+                                <tbody>
+                                    ${orderData.items.map((item: any, index: number) => `
+                                        <tr style="background-color: ${index % 2 === 0 ? '#f9f9f9' : 'white'};">
+                                            <td style="padding: 12px; border: 1px solid #ddd; color: #333;">${item.name}</td>
+                                            <td style="padding: 12px; text-align: center; border: 1px solid #ddd; color: #333;">${item.quantity}</td>
+                                            <td style="padding: 12px; text-align: right; border: 1px solid #ddd; color: #333;">$${item.price.toFixed(2)}</td>
+                                            <td style="padding: 12px; text-align: right; border: 1px solid #ddd; color: #333; font-weight: bold;">$${(item.price * item.quantity).toFixed(2)}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Mobile Card Layout (hidden on desktop) -->
+                        <div class="mobile-cards" style="display: none;">
+                            ${orderData.items.map((item: any, index: number) => `
+                                <div style="background-color: ${index % 2 === 0 ? '#f9f9f9' : 'white'}; border: 1px solid #ddd; border-radius: 8px; padding: 15px; margin-bottom: 10px;">
+                                    <div style="font-weight: bold; color: #333; margin-bottom: 8px;">${item.name}</div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span style="color: #666;">Qty: ${item.quantity}</span>
+                                        <span style="color: #666;">Price: $${item.price.toFixed(2)}</span>
+                                        <span style="font-weight: bold; color: #d4af37;">$${(item.price * item.quantity).toFixed(2)}</span>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+
                         <div style="background-color: #d4af37; color: white; padding: 15px; border-radius: 8px; text-align: center; font-size: 18px; font-weight: bold;">
                             Total Amount: $${orderData.totalAmount.toFixed(2)}
                         </div>
                     </div>
-                    
+
                     <div style="text-align: center; margin-top: 20px; color: #666; font-size: 12px;">
                         <p>This is an automated notification from NovaChrono. Please process this order promptly.</p>
                     </div>
                 </div>
+
+                <style>
+                    @media (max-width: 600px) {
+                        .table-container { display: none !important; }
+                        .mobile-cards { display: block !important; }
+                    }
+                </style>
             `,
         };
 
@@ -106,11 +135,15 @@ export const createOrder = async (orderData: any) => {
                         <h2 style="margin: 10px 0; color: #ffffff;">Thank You for Your Order!</h2>
                         <p style="margin: 10px 0; color: #cccccc;">Your order has been successfully placed and is being processed.</p>
                     </div>
-                    
+
                     <div style="background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                         <h3 style="color: #333; border-bottom: 2px solid #d4af37; padding-bottom: 10px;">Order Summary</h3>
                         <table style="width: 100%; border-collapse: collapse;">
                             <tr>
+                                <td style="padding: 8px 0; font-weight: bold; color: #555;">Order ID:</td>
+                                <td style="padding: 8px 0; color: #d4af37; font-weight: bold;">#${result.id || result._id}</td>
+                            </tr>
+                            <tr style="background-color: #f9f9f9;">
                                 <td style="padding: 8px 0; font-weight: bold; color: #555;">Order Date:</td>
                                 <td style="padding: 8px 0; color: #333;">${new Date().toLocaleDateString()}</td>
                             </tr>
@@ -123,33 +156,51 @@ export const createOrder = async (orderData: any) => {
                                 <td style="padding: 8px 0; color: #333;">${orderData.address}</td>
                             </tr>
                         </table>
-                        
+
                         <h3 style="color: #333; border-bottom: 2px solid #d4af37; padding-bottom: 10px; margin-top: 30px;">Your Items</h3>
-                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
-                            <thead>
-                                <tr style="background-color: #1a1a1a; color: white;">
-                                    <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Product</th>
-                                    <th style="padding: 12px; text-align: center; border: 1px solid #ddd;">Quantity</th>
-                                    <th style="padding: 12px; text-align: right; border: 1px solid #ddd;">Price</th>
-                                    <th style="padding: 12px; text-align: right; border: 1px solid #ddd;">Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${orderData.items.map((item: any, index: number) => `
-                                    <tr style="background-color: ${index % 2 === 0 ? '#f9f9f9' : 'white'};">
-                                        <td style="padding: 12px; border: 1px solid #ddd; color: #333;">${item.name}</td>
-                                        <td style="padding: 12px; text-align: center; border: 1px solid #ddd; color: #333;">${item.quantity}</td>
-                                        <td style="padding: 12px; text-align: right; border: 1px solid #ddd; color: #333;">$${item.price.toFixed(2)}</td>
-                                        <td style="padding: 12px; text-align: right; border: 1px solid #ddd; color: #333; font-weight: bold;">$${(item.price * item.quantity).toFixed(2)}</td>
+
+                        <!-- Desktop Table (hidden on mobile) -->
+                        <div class="table-container" style="display: block; overflow-x: auto;">
+                            <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; min-width: 500px;">
+                                <thead>
+                                    <tr style="background-color: #1a1a1a; color: white;">
+                                        <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Product</th>
+                                        <th style="padding: 12px; text-align: center; border: 1px solid #ddd;">Qty</th>
+                                        <th style="padding: 12px; text-align: right; border: 1px solid #ddd;">Price</th>
+                                        <th style="padding: 12px; text-align: right; border: 1px solid #ddd;">Total</th>
                                     </tr>
-                                `).join('')}
-                            </tbody>
-                        </table>
-                        
+                                </thead>
+                                <tbody>
+                                    ${orderData.items.map((item: any, index: number) => `
+                                        <tr style="background-color: ${index % 2 === 0 ? '#f9f9f9' : 'white'};">
+                                            <td style="padding: 12px; border: 1px solid #ddd; color: #333;">${item.name}</td>
+                                            <td style="padding: 12px; text-align: center; border: 1px solid #ddd; color: #333;">${item.quantity}</td>
+                                            <td style="padding: 12px; text-align: right; border: 1px solid #ddd; color: #333;">$${item.price.toFixed(2)}</td>
+                                            <td style="padding: 12px; text-align: right; border: 1px solid #ddd; color: #333; font-weight: bold;">$${(item.price * item.quantity).toFixed(2)}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Mobile Card Layout (hidden on desktop) -->
+                        <div class="mobile-cards" style="display: none;">
+                            ${orderData.items.map((item: any, index: number) => `
+                                <div style="background-color: ${index % 2 === 0 ? '#f9f9f9' : 'white'}; border: 1px solid #ddd; border-radius: 8px; padding: 15px; margin-bottom: 10px;">
+                                    <div style="font-weight: bold; color: #333; margin-bottom: 8px;">${item.name}</div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span style="color: #666;">Qty: ${item.quantity}</span>
+                                        <span style="color: #666;">Price: $${item.price.toFixed(2)}</span>
+                                        <span style="font-weight: bold; color: #d4af37;">$${(item.price * item.quantity).toFixed(2)}</span>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+
                         <div style="background-color: #d4af37; color: white; padding: 15px; border-radius: 8px; text-align: center; font-size: 18px; font-weight: bold;">
                             Total Amount: $${orderData.totalAmount.toFixed(2)}
                         </div>
-                        
+
                         <div style="margin-top: 20px; padding: 15px; background-color: #f0f0f0; border-radius: 8px;">
                             <h4 style="margin: 0 0 10px 0; color: #333;">What's Next?</h4>
                             <ul style="color: #555; margin: 0; padding-left: 20px;">
@@ -159,12 +210,19 @@ export const createOrder = async (orderData: any) => {
                             </ul>
                         </div>
                     </div>
-                    
+
                     <div style="text-align: center; margin-top: 20px; color: #666; font-size: 12px;">
                         <p>Thank you for shopping with NovaChrono! We appreciate your business.</p>
                         <p>This is an automated confirmation email. Please do not reply to this message.</p>
                     </div>
                 </div>
+
+                <style>
+                    @media (max-width: 600px) {
+                        .table-container { display: none !important; }
+                        .mobile-cards { display: block !important; }
+                    }
+                </style>
             `,
         };
 
