@@ -1,35 +1,35 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Category, CreateCategoryDto, UpdateCategoryDto } from '@/actions/categories/types';
-import { createCategory, updateCategory } from '@/actions/categories/service';
+import { Brand, CreateBrandDto, UpdateBrandDto } from '@/actions/brands/types';
+import { createBrand, updateBrand } from '@/actions/brands/service';
 import { X } from 'lucide-react';
 
-interface CategoryFormProps {
-    category?: Category; // If present, edit mode
+interface BrandFormProps {
+    brand?: Brand; // If present, edit mode
     isOpen: boolean;
     onClose: () => void;
 }
 
-export default function CategoryForm({ category, isOpen, onClose }: CategoryFormProps) {
+export default function BrandForm({ brand, isOpen, onClose }: BrandFormProps) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const [formData, setFormData] = useState<CreateCategoryDto>({
+    const [formData, setFormData] = useState<CreateBrandDto>({
         name: '',
         description: '',
     });
 
     useEffect(() => {
-        if (category) {
+        if (brand) {
             setFormData({
-                name: category.name,
-                description: category.description || '',
+                name: brand.name,
+                description: brand.description || '',
             });
         } else {
             setFormData({ name: '', description: '' });
         }
-    }, [category, isOpen]);
+    }, [brand, isOpen]);
 
     if (!isOpen) return null;
 
@@ -39,15 +39,15 @@ export default function CategoryForm({ category, isOpen, onClose }: CategoryForm
         setError(null);
 
         try {
-            if (category) {
-                await updateCategory(category._id, formData);
+            if (brand) {
+                await updateBrand(brand._id, formData);
             } else {
-                await createCategory(formData);
+                await createBrand(formData);
             }
             onClose();
         } catch (err: any) {
-            console.error('Failed to save category:', err);
-            setError(err.message || 'Failed to save category');
+            console.error('Failed to save brand:', err);
+            setError(err.message || 'Failed to save brand');
         } finally {
             setLoading(false);
         }
@@ -58,7 +58,7 @@ export default function CategoryForm({ category, isOpen, onClose }: CategoryForm
             <div className="bg-white dark:bg-zinc-900 rounded-xl shadow-xl w-full max-w-md border border-gray-200 dark:border-zinc-800">
                 <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-zinc-800">
                     <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">
-                        {category ? 'Edit Category' : 'New Category'}
+                        {brand ? 'Edit Brand' : 'New Brand'}
                     </h2>
                     <button
                         onClick={onClose}
@@ -83,7 +83,7 @@ export default function CategoryForm({ category, isOpen, onClose }: CategoryForm
                             value={formData.name}
                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                             className="w-full px-3 py-2 border border-gray-300 dark:border-zinc-700 rounded-md bg-white dark:bg-zinc-950 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="e.g. Watches"
+                            placeholder="e.g. Rolex"
                         />
                     </div>
 
@@ -93,7 +93,7 @@ export default function CategoryForm({ category, isOpen, onClose }: CategoryForm
                             value={formData.description}
                             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                             className="w-full px-3 py-2 border border-gray-300 dark:border-zinc-700 rounded-md bg-white dark:bg-zinc-950 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[100px]"
-                            placeholder="Optional category description..."
+                            placeholder="Optional brand description..."
                         />
                     </div>
 
@@ -110,7 +110,7 @@ export default function CategoryForm({ category, isOpen, onClose }: CategoryForm
                             disabled={loading}
                             className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                            {loading ? 'Saving...' : category ? 'Update Category' : 'Create Category'}
+                            {loading ? 'Saving...' : brand ? 'Update Brand' : 'Create Brand'}
                         </button>
                     </div>
                 </form>

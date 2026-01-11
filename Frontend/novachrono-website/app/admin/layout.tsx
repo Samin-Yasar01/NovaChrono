@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { getCookie, deleteCookie } from '@/lib/cookie-utils';
-import { LayoutDashboard, Package, ShoppingCart, LogOut, Menu } from 'lucide-react';
+import { LayoutDashboard, Package, ShoppingCart, LogOut, Menu, Tag } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export default function AdminLayout({
@@ -42,8 +42,9 @@ export default function AdminLayout({
     const navItems = [
         { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
         { name: 'Products', href: '/admin/products', icon: Package },
-        { name: 'Orders', href: '/admin/orders', icon: ShoppingCart },
         { name: 'Categories', href: '/admin/categories', icon: Menu },
+        { name: 'Brands', href: '/admin/brands', icon: Tag },
+        { name: 'Orders', href: '/admin/orders', icon: ShoppingCart },
     ];
 
     return (

@@ -5,7 +5,9 @@ import { useRouter } from 'next/navigation';
 import { mutate } from 'swr';
 import { createProduct, updateProduct } from '@/actions/products/service';
 import { getCategories } from '@/actions/categories/service';
+import { getBrands } from '@/actions/brands/service';
 import { Category } from '@/actions/categories/types';
+import { Brand } from '@/actions/brands/types';
 import { Loader2, Save, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
@@ -26,9 +28,12 @@ export default function ProductForm({ initialData, isEdit = false }: ProductForm
         price: '',
         description: '',
         category: '',
+        brand: '',
     });
     const [categories, setCategories] = useState<Category[]>([]);
+    const [brands, setBrands] = useState<Brand[]>([]);
     const [isLoadingCategories, setIsLoadingCategories] = useState(true);
+    const [isLoadingBrands, setIsLoadingBrands] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
 
@@ -44,7 +49,19 @@ export default function ProductForm({ initialData, isEdit = false }: ProductForm
             }
         };
 
+        const fetchBrands = async () => {
+            try {
+                const data = await getBrands();
+                setBrands(data);
+            } catch (err) {
+                console.error("Failed to load brands", err);
+            } finally {
+                setIsLoadingBrands(false);
+            }
+        };
+
         fetchCategories();
+        fetchBrands();
     }, []);
 
     useEffect(() => {
@@ -59,6 +76,9 @@ export default function ProductForm({ initialData, isEdit = false }: ProductForm
                 category: typeof (initialData as any).category === 'object'
                     ? (initialData as any).category?._id
                     : (initialData as any).category || '',
+                brand: typeof (initialData as any).brand === 'object'
+                    ? (initialData as any).brand?._id
+                    : (initialData as any).brand || '',
             });
         }
     }, [initialData]);
@@ -73,7 +93,8 @@ export default function ProductForm({ initialData, isEdit = false }: ProductForm
                 name: formData.name,
                 price: parseFloat(formData.price),
                 description: formData.description,
-                category: formData.category || undefined, // Send undefined if empty to skip or let backend handle simple string optional
+                category: formData.category || undefined,
+                brand: formData.brand || undefined,
             };
 
             if (isEdit && initialData?._id) {
@@ -155,6 +176,26 @@ export default function ProductForm({ initialData, isEdit = false }: ProductForm
                         {categories.map((cat) => (
                             <option key={cat._id} value={cat._id}>
                                 {cat.name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+
+                <div className="space-y-2">
+                    <label htmlFor="brand" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Brand
+                    </label>
+                    <select
+                        id="brand"
+                        value={formData.brand}
+                        onChange={(e) => setFormData({ ...formData, brand: e.target.value })}
+                        disabled={isLoadingBrands}
+                        className="w-full rounded-lg border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-4 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+                    >
+                        <option value="">Select a brand...</option>
+                        {brands.map((brand) => (
+                            <option key={brand._id} value={brand._id}>
+                                {brand.name}
                             </option>
                         ))}
                     </select>

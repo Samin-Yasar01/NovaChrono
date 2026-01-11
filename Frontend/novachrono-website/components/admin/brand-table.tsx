@@ -1,29 +1,29 @@
 'use client';
 
 import { useState } from 'react';
-import { Category } from '@/actions/categories/types';
-import { deleteCategory } from '@/actions/categories/service';
-import { Edit, Trash2, Plus } from 'lucide-react';
+import { Brand } from '@/actions/brands/types';
+import { deleteBrand } from '@/actions/brands/service';
+import { Edit, Trash2 } from 'lucide-react';
 
-interface CategoryTableProps {
-    categories: Category[];
-    onEdit: (category: Category) => void;
+interface BrandTableProps {
+    brands: Brand[];
+    onEdit: (brand: Brand) => void;
     onDelete: (id: string) => Promise<void>;
 }
 
-export default function CategoryTable({ categories, onEdit, onDelete }: CategoryTableProps) {
+export default function BrandTable({ brands, onEdit, onDelete }: BrandTableProps) {
     const [deletingId, setDeletingId] = useState<string | null>(null);
 
     const handleDelete = async (id: string) => {
-        if (!confirm('Are you sure you want to delete this category?')) return;
+        if (!confirm('Are you sure you want to delete this brand?')) return;
 
         setDeletingId(id);
         try {
-            await deleteCategory(id);
+            await deleteBrand(id);
             await onDelete(id);
         } catch (error) {
-            console.error('Failed to delete category:', error);
-            alert('Failed to delete category');
+            console.error('Failed to delete brand:', error);
+            alert('Failed to delete brand');
         } finally {
             setDeletingId(null);
         }
@@ -41,37 +41,37 @@ export default function CategoryTable({ categories, onEdit, onDelete }: Category
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200 dark:divide-zinc-800">
-                        {categories.length === 0 ? (
+                        {brands.length === 0 ? (
                             <tr>
                                 <td colSpan={3} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
-                                    No categories found. Create one to get started.
+                                    No brands found. Create one to get started.
                                 </td>
                             </tr>
                         ) : (
-                            categories.map((category) => (
-                                <tr key={category._id} className="hover:bg-gray-50 dark:hover:bg-zinc-800/50 transition-colors">
+                            brands.map((brand) => (
+                                <tr key={brand._id} className="hover:bg-gray-50 dark:hover:bg-zinc-800/50 transition-colors">
                                     <td className="px-6 py-4 font-medium text-gray-900 dark:text-gray-100">
-                                        {category.name}
+                                        {brand.name}
                                     </td>
                                     <td className="px-6 py-4 text-gray-500 dark:text-gray-400">
-                                        {category.description || '-'}
+                                        {brand.description || '-'}
                                     </td>
                                     <td className="px-6 py-4 text-right">
                                         <div className="flex justify-end gap-2">
                                             <button
-                                                onClick={() => onEdit(category)}
+                                                onClick={() => onEdit(brand)}
                                                 className="p-2 text-blue-600 hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-blue-900/20 rounded-md transition-colors"
                                                 title="Edit"
                                             >
                                                 <Edit className="w-4 h-4" />
                                             </button>
                                             <button
-                                                onClick={() => handleDelete(category._id)}
-                                                disabled={deletingId === category._id}
+                                                onClick={() => handleDelete(brand._id)}
+                                                disabled={deletingId === brand._id}
                                                 className="p-2 text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20 rounded-md transition-colors disabled:opacity-50"
                                                 title="Delete"
                                             >
-                                                {deletingId === category._id ? (
+                                                {deletingId === brand._id ? (
                                                     <span className="w-4 h-4 block animate-spin border-2 border-current border-t-transparent rounded-full" />
                                                 ) : (
                                                     <Trash2 className="w-4 h-4" />
