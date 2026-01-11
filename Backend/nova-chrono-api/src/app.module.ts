@@ -10,6 +10,7 @@ import { OrdersModule } from './modules/orders/orders.module';
 import { InventoryModule } from './modules/inventory/inventory.module';
 import { AdminModule } from './modules/admin/admin.module';
 import { HealthController } from './modules/health/health.controller';
+import { BrandsModule } from './modules/brands/brands.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { HealthController } from './modules/health/health.controller';
     OrdersModule,
     InventoryModule,
     AdminModule,
+    BrandsModule,
   ],
   controllers: [AppController, HealthController],
   providers: [AppService],
