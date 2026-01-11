@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { Category } from '@/actions/categories/types';
+import { getCategories } from '@/actions/categories/service';
 import CategoryTable from '@/components/admin/category-table';
 import CategoryForm from '@/components/admin/category-form';
 import { Plus } from 'lucide-react';
@@ -11,12 +12,22 @@ interface CategoriesClientProps {
 }
 
 export default function CategoriesClient({ initialCategories }: CategoriesClientProps) {
+    const [categories, setCategories] = useState<Category[]>(initialCategories);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingCategory, setEditingCategory] = useState<Category | undefined>(undefined);
 
-    // simple sync with server data via router.refresh in components, 
-    // but here we just take initialCategories. 
-    // Ideally useSWR or similar if we want live updates, but Server Actions + router.refresh is fine.
+    const refreshCategories = useCallback(async () => {
+        try {
+            const updatedCategories = await getCategories();
+            setCategories(updatedCategories);
+        } catch (error) {
+            console.error('Failed to refresh categories:', error);
+        }
+    }, []);
+
+    const handleDelete = useCallback(async (id: string) => {
+        await refreshCategories();
+    }, [refreshCategories]);
 
     const handleCreate = () => {
         setEditingCategory(undefined);
@@ -26,6 +37,11 @@ export default function CategoriesClient({ initialCategories }: CategoriesClient
     const handleEdit = (category: Category) => {
         setEditingCategory(category);
         setIsModalOpen(true);
+    };
+
+    const handleFormClose = async () => {
+        setIsModalOpen(false);
+        await refreshCategories();
     };
 
     return (
@@ -47,14 +63,15 @@ export default function CategoriesClient({ initialCategories }: CategoriesClient
             </div>
 
             <CategoryTable
-                categories={initialCategories}
+                categories={categories}
                 onEdit={handleEdit}
+                onDelete={handleDelete}
             />
 
             <CategoryForm
                 isOpen={isModalOpen}
                 category={editingCategory}
-                onClose={() => setIsModalOpen(false)}
+                onClose={handleFormClose}
             />
         </div>
     );
