@@ -38,4 +38,14 @@ export class CreateProductDto {
   @IsString()
   @IsMongoId()
   category?: string;
+
+  @ApiProperty({
+    description: 'The brand ID of the product',
+    example: '60d1b2c3d4e5f6a7b8c9d0e1',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  @IsMongoId()
+  brand?: string;
 }

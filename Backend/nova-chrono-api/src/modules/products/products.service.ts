@@ -14,11 +14,11 @@ export class ProductsService {
   }
 
   async getAllProducts(): Promise<Product[]> {
-    return this.productModel.find().populate('category').exec();
+    return this.productModel.find().populate('category').populate('brand').exec();
   }
 
   async getProductById(id: string): Promise<Product> {
-    const product = await this.productModel.findById(id).populate('category').exec();
+    const product = await this.productModel.findById(id).populate('category').populate('brand').exec();
     if (!product) {
       throw new NotFoundException('Product not found');
     }
@@ -29,6 +29,7 @@ export class ProductsService {
     const product = await this.productModel
       .findByIdAndUpdate(id, updateProductDto, { new: true })
       .populate('category')
+      .populate('brand')
       .exec();
     if (!product) {
       throw new NotFoundException('Product not found');
