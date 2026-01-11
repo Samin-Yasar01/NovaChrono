@@ -23,6 +23,13 @@ export const Api_path = {
         UPDATE: (id: string) => `/categories/${id}`,
         DELETE: (id: string) => `/categories/${id}`,
     },
+    BRANDS: {
+        LIST: "/brands",
+        CREATE: "/brands",
+        GET_ONE: (id: string) => `/brands/${id}`,
+        UPDATE: (id: string) => `/brands/${id}`,
+        DELETE: (id: string) => `/brands/${id}`,
+    },
     INVENTORY: {
         LIST: "/inventory",
         GET_BY_PRODUCT: (productId: string) => `/inventory/product/${productId}`,
