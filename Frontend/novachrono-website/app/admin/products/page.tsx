@@ -12,6 +12,7 @@ interface Product {
     price: number;
     description?: string;
     category?: { _id: string; name: string } | string; // Can be object (populated) or string
+    brand?: { _id: string; name: string } | string; // Can be object (populated) or string
     createdAt: string;
 }
 
@@ -69,6 +70,7 @@ export default function ProductsPage() {
                         <thead className="bg-gray-50 dark:bg-zinc-800/50 text-gray-500 dark:text-gray-400">
                             <tr>
                                 <th className="px-6 py-3 font-medium">Name</th>
+                                <th className="px-6 py-3 font-medium">Brand</th>
                                 <th className="px-6 py-3 font-medium">Category</th>
                                 <th className="px-6 py-3 font-medium">Description</th>
                                 <th className="px-6 py-3 font-medium">Price</th>
@@ -78,19 +80,19 @@ export default function ProductsPage() {
                         <tbody className="divide-y divide-gray-200 dark:divide-zinc-800">
                             {isLoading ? (
                                 <tr>
-                                    <td colSpan={4} className="p-8 text-center">
+                                    <td colSpan={5} className="p-8 text-center">
                                         <Loader2 className="h-8 w-8 animate-spin mx-auto text-blue-500" />
                                     </td>
                                 </tr>
                             ) : error ? (
                                 <tr>
-                                    <td colSpan={4} className="p-8 text-center text-red-500">
+                                    <td colSpan={5} className="p-8 text-center text-red-500">
                                         Failed to load products
                                     </td>
                                 </tr>
                             ) : filteredProducts?.length === 0 ? (
                                 <tr>
-                                    <td colSpan={4} className="p-8 text-center text-gray-500">
+                                    <td colSpan={5} className="p-8 text-center text-gray-500">
                                         No products found.
                                     </td>
                                 </tr>
@@ -99,6 +101,9 @@ export default function ProductsPage() {
                                     <tr key={product._id} className="hover:bg-gray-50 dark:hover:bg-zinc-800/50">
                                         <td className="px-6 py-4 font-medium text-gray-900 dark:text-white">
                                             {product.name}
+                                        </td>
+                                        <td className="px-6 py-4 text-gray-500 dark:text-gray-400">
+                                            {typeof product.brand === 'object' ? product.brand?.name : 'No Brand'}
                                         </td>
                                         <td className="px-6 py-4 text-gray-500 dark:text-gray-400">
                                             {typeof product.category === 'object' ? product.category?.name : 'Uncategorized'}

@@ -17,6 +17,8 @@ interface ProductFormProps {
         name: string;
         price: number;
         description?: string;
+        category?: any;
+        brand?: any;
     };
     isEdit?: boolean;
 }
