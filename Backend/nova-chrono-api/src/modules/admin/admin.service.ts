@@ -17,6 +17,7 @@ export class AdminService {
     const totalProducts = await this.productModel.countDocuments();
     const totalOrders = await this.orderModel.countDocuments();
     const totalCategories = await this.categoryModel.countDocuments();
+    const pendingOrders = await this.orderModel.countDocuments({ status: 'pending' });
 
     // Calculate total revenue
     const revenueResult = await this.orderModel.aggregate([
@@ -35,6 +36,7 @@ export class AdminService {
       totalOrders,
       totalCategories,
       totalRevenue,
+      pendingOrders,
       recentOrders,
     };
   }
