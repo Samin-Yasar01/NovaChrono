@@ -41,7 +41,7 @@ export class CreateProductDto {
 
   @ApiProperty({
     description: 'The brand ID of the product',
-    example: '60d1b2c3d4e5f6a7b8c9d0e2',
+    example: '60d1b2c3d4e5f6a7b8c9d0e1',
     required: false,
   })
   @IsOptional()
