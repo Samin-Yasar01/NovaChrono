@@ -17,6 +17,7 @@ interface DashboardStats {
     totalOrders: number;
     totalCategories: number;
     totalRevenue: number;
+    pendingOrders: number;
     recentOrders: Order[];
 }
 
@@ -42,7 +43,7 @@ export default function AdminDashboard() {
         );
     }
 
-    const { totalProducts, totalOrders, totalCategories, totalRevenue, recentOrders } = data!;
+    const { totalProducts, totalOrders, totalCategories, totalRevenue, pendingOrders, recentOrders } = data!;
 
     const stats = [
         {
@@ -58,6 +59,13 @@ export default function AdminDashboard() {
             icon: ShoppingCart,
             color: 'bg-blue-500',
             textColor: 'text-blue-500',
+        },
+        {
+            name: 'Pending Orders',
+            value: pendingOrders,
+            icon: AlertCircle,
+            color: 'bg-yellow-500',
+            textColor: 'text-yellow-500',
         },
         {
             name: 'Products',
@@ -81,7 +89,7 @@ export default function AdminDashboard() {
                 <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">Dashboard</h2>
             </div>
 
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
                 {stats.map((stat) => (
                     <div
                         key={stat.name}
