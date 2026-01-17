@@ -4,7 +4,7 @@ import { useProduct, useProductImages } from '@/actions/products/business';
 import { useCart } from '@/context/cart-context';
 import Button from '@/components/ui/button';
 import ProductImageGallery from '@/components/product-image-gallery';
-import { Loader2, Plus, Minus, ShoppingBag, ArrowLeft } from 'lucide-react';
+import { Loader2, Plus, Minus, ShoppingBag, ArrowLeft, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { useState, use } from 'react';
 import { motion } from 'framer-motion';
@@ -13,7 +13,7 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ id: s
     const resolvedParams = use(params);
     const { product, isLoading, isError } = useProduct(resolvedParams.id);
     const { images } = useProductImages(product?._id);
-    const { addToCart } = useCart();
+    const { cart, addToCart } = useCart();
     const [quantity, setQuantity] = useState(1);
 
     const handleAddToCart = () => {
@@ -92,13 +92,26 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ id: s
                             </div>
                         </div>
 
-                        <Button
-                            size="lg"
-                            className="w-full md:w-auto min-w-[200px]"
-                            onClick={handleAddToCart}
-                        >
-                            <ShoppingBag className="mr-2 w-5 h-5" /> Add to Cart
-                        </Button>
+                        <div className="flex flex-col gap-4 md:flex-row">
+                            <Button
+                                size="lg"
+                                className="w-full md:w-auto min-w-[200px] cursor-pointer"
+                                onClick={handleAddToCart}
+                            >
+                                <ShoppingBag className="mr-2 w-5 h-5 " /> Add to Cart
+                            </Button>
+                            {cart.length > 0 && (
+                                <Link href="/checkout">
+                                    <Button
+                                        variant="outline"
+                                        size="lg"
+                                        className="w-full md:w-auto min-w-[200px] cursor-pointer"
+                                    >
+                                        Proceed to Checkout <ArrowRight className="ml-2 w-5 h-5" />
+                                    </Button>
+                                </Link>
+                            )}
+                        </div>
                     </div>
 
                     {/* Additional Details */}
