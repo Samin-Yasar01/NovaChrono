@@ -5,6 +5,12 @@ export const Api_path = {
         GET_ONE: (id: string) => `/products/${id}`,
         UPDATE: (id: string) => `/products/${id}`,
         DELETE: (id: string) => `/products/${id}`,
+        IMAGES: {
+            LIST: (productId: string) => `/products/${productId}/images`,
+            CREATE: (productId: string) => `/products/${productId}/images`,
+            UPDATE: (imageId: string) => `/products/images/${imageId}`,
+            DELETE: (imageId: string) => `/products/images/${imageId}`,
+        },
     },
     ORDERS: {
         LIST: "/orders",

@@ -1,9 +1,9 @@
 "use client";
 
-// We need to unwrap params in Next.js 15+ (and 16, typically) for dynamic routes in App Router.
-import { useProduct } from '@/actions/products/business';
+import { useProduct, useProductImages } from '@/actions/products/business';
 import { useCart } from '@/context/cart-context';
 import Button from '@/components/ui/button';
+import ProductImageGallery from '@/components/product-image-gallery';
 import { Loader2, Plus, Minus, ShoppingBag, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { useState, use } from 'react';
@@ -12,6 +12,7 @@ import { motion } from 'framer-motion';
 export default function ProductDetailsPage({ params }: { params: Promise<{ id: string }> }) {
     const resolvedParams = use(params);
     const { product, isLoading, isError } = useProduct(resolvedParams.id);
+    const { images } = useProductImages(product?._id);
     const { addToCart } = useCart();
     const [quantity, setQuantity] = useState(1);
 
@@ -45,16 +46,15 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ id: s
             </Link>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
-                {/* Product Image Placeholder */}
+                {/* Product Image Gallery */}
                 <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    className="bg-gunmetal-800 aspect-square rounded-sm border border-white/5 flex items-center justify-center relative overflow-hidden"
                 >
-                    <div className="text-gunmetal-700 font-bold text-9xl select-none">
-                        NC
-                    </div>
-                    <div className="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent pointer-events-none" />
+                    <ProductImageGallery
+                        images={images}
+                        productName={product.name}
+                    />
                 </motion.div>
 
                 {/* Product Info */}
