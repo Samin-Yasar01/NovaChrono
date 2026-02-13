@@ -14,10 +14,14 @@ export default function CheckoutPage() {
         phone: '',
         address: '',
         email: '',
+        deliveryLocation: '',
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState(false);
+
+    const deliveryCharge = formData.deliveryLocation === 'inside' ? 60 : formData.deliveryLocation === 'outside' ? 120 : 0;
+    const totalWithDelivery = cartTotal + deliveryCharge;
 
     useEffect(() => {
         if (cart.length === 0) {
@@ -40,13 +44,15 @@ export default function CheckoutPage() {
                 phone: formData.phone,
                 email: formData.email,
                 address: formData.address,
+                deliveryLocation: formData.deliveryLocation,
                 items: cart.map(item => ({
                     productId: item._id,
                     name: item.name,
                     quantity: item.quantity,
                     price: item.price
                 })),
-                totalAmount: cartTotal,
+                totalAmount: totalWithDelivery,
+                deliveryCharge,
             };
 
             await createOrder(orderData);
@@ -115,7 +121,21 @@ export default function CheckoutPage() {
                         </div>
 
                         <div className="space-y-2">
-                            <label className="text-sm font-medium text-gray-300">Shipping Address</label>
+                            <label className="text-sm font-medium text-gray-300">Delivery Location</label>
+                            <select
+                                required
+                                className="w-full bg-gunmetal-900 border border-white/10 rounded-sm p-3 text-white focus:outline-none focus:border-gold-500 transition-colors"
+                                value={formData.deliveryLocation}
+                                onChange={(e) => setFormData({ ...formData, deliveryLocation: e.target.value })}
+                            >
+                                <option value="">Select Location</option>
+                                <option value="inside">Inside Dhaka</option>
+                                <option value="outside">Outside Dhaka</option>
+                            </select>
+                        </div>
+
+                        <div className="space-y-2">
+                            <label className="text-sm font-medium text-gray-300">Detail Address</label>
                             <textarea
                                 required
                                 rows={3}
@@ -126,10 +146,23 @@ export default function CheckoutPage() {
                             />
                         </div>
 
+                        
+
                         <div className="pt-6 border-t border-white/10">
+                            <div className="space-y-2 mb-6">
+                                <div className="flex justify-between text-gray-400">
+                                    <span>Subtotal</span>
+                                    <span className="text-white">${cartTotal.toLocaleString()}</span>
+                                </div>
+                                <div className="flex justify-between text-gray-400">
+                                    <span>Delivery Charge</span>
+                                    <span className="text-white">{deliveryCharge} Taka</span>
+                                </div>
+                            </div>
+
                             <div className="flex justify-between text-lg font-bold text-white mb-6">
                                 <span>Total Amount</span>
-                                <span className="text-gold-500">${cartTotal.toLocaleString()}</span>
+                                <span className="text-gold-500">${totalWithDelivery.toLocaleString()}</span>
                             </div>
 
                             {error && <p className="text-red-400 text-sm mb-4">{error}</p>}
@@ -137,7 +170,7 @@ export default function CheckoutPage() {
                             <Button
                                 type="submit"
                                 size="lg"
-                                className="w-full"
+                                className="w-full cursor-pointer"
                                 isLoading={isSubmitting}
                             >
                                 Place Order

@@ -17,6 +17,12 @@ export class Order {
   @Prop({ required: true })
   address: string;
 
+  @Prop({ required: true })
+  deliveryLocation: string;
+
+  @Prop({ required: true })
+  deliveryCharge: number;
+
   @Prop([
     {
       productId: { type: String, required: true }, // Could be ObjectId ref
