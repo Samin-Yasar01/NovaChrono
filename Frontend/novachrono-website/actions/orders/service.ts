@@ -90,18 +90,38 @@ export const createOrder = async (orderData: any) => {
                             </table>
                         </div>
 
-                        <!-- Mobile Card Layout (hidden on desktop) -->
-                        <div class="mobile-cards" style="display: none;">
+                        <!-- Mobile Card Layout (shown on mobile, hidden on desktop via CSS) -->
+                        <div class="mobile-cards" style="display: block;">
                             ${orderData.items.map((item: any, index: number) => `
                                 <div style="background-color: ${index % 2 === 0 ? '#f9f9f9' : 'white'}; border: 1px solid #ddd; border-radius: 8px; padding: 15px; margin-bottom: 10px;">
-                                    <div style="font-weight: bold; color: #333; margin-bottom: 8px;">${item.name}</div>
-                                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                                        <span style="color: #666;">Qty: ${item.quantity}</span>
-                                        <span style="color: #666;">Price: $${item.price.toFixed(2)}</span>
-                                        <span style="font-weight: bold; color: #d4af37;">$${(item.price * item.quantity).toFixed(2)}</span>
+                                    <div style="font-weight: bold; color: #333; margin-bottom: 12px; font-size: 16px;">${item.name}</div>
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                        <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                                            <span style="color: #666; font-weight: 500; font-size: 12px; margin-bottom: 4px;">Quantity:&nbsp;</span>
+                                            <span style="color: #333; font-weight: bold; font-size: 14px;">${item.quantity}</span>
+                                        </div>
+                                        <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                                            <span style="color: #666; font-weight: 500; font-size: 12px; margin-bottom: 4px;">Unit Price:&nbsp;</span>
+                                            <span style="color: #333; font-size: 14px;">$${item.price.toFixed(2)}</span>
+                                        </div>
+                                        <div style="display: flex; flex-direction: column; align-items: flex-start; grid-column: span 2; border-top: 1px solid #ddd; padding-top: 12px; margin-top: 8px;">
+                                            <span style="color: #666; font-weight: 500; font-size: 12px; margin-bottom: 4px;">Line Total:&nbsp;</span>
+                                            <span style="font-weight: bold; color: #d4af37; font-size: 16px;">$${(item.price * item.quantity).toFixed(2)}</span>
+                                        </div>
                                     </div>
                                 </div>
                             `).join('')}
+                        </div>
+
+                        <div style="background-color: #f9f9f9; padding: 15px; border-radius: 8px; margin-bottom: 20px;" class="pricing-breakdown">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <span style="font-weight: bold; color: #555;">Subtotal:</span>
+                                <span style="color: #333;">$${(orderData.totalAmount - orderData.deliveryCharge).toFixed(2)}</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-weight: bold; color: #555;">Delivery Charge:</span>
+                                <span style="color: #333;">${orderData.deliveryCharge} Taka</span>
+                            </div>
                         </div>
 
                         <div style="background-color: #d4af37; color: white; padding: 15px; border-radius: 8px; text-align: center; font-size: 18px; font-weight: bold;">
@@ -118,6 +138,20 @@ export const createOrder = async (orderData: any) => {
                     @media (max-width: 600px) {
                         .table-container { display: none !important; }
                         .mobile-cards { display: block !important; }
+                        .pricing-breakdown {
+                            display: flex !important;
+                            flex-direction: column !important;
+                            gap: 8px !important;
+                        }
+                        .pricing-breakdown > div {
+                            display: flex !important;
+                            justify-content: space-between !important;
+                            align-items: center !important;
+                        }
+                    }
+                    @media (min-width: 601px) {
+                        .mobile-cards { display: none !important; }
+                        .table-container { display: block !important; }
                     }
                 </style>
             `,
@@ -183,18 +217,38 @@ export const createOrder = async (orderData: any) => {
                             </table>
                         </div>
 
-                        <!-- Mobile Card Layout (hidden on desktop) -->
-                        <div class="mobile-cards" style="display: none;">
+                        <!-- Mobile Card Layout (shown on mobile, hidden on desktop via CSS) -->
+                        <div class="mobile-cards" style="display: block;">
                             ${orderData.items.map((item: any, index: number) => `
                                 <div style="background-color: ${index % 2 === 0 ? '#f9f9f9' : 'white'}; border: 1px solid #ddd; border-radius: 8px; padding: 15px; margin-bottom: 10px;">
-                                    <div style="font-weight: bold; color: #333; margin-bottom: 8px;">${item.name}</div>
-                                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                                        <span style="color: #666;">Qty: ${item.quantity}</span>
-                                        <span style="color: #666;">Price: $${item.price.toFixed(2)}</span>
-                                        <span style="font-weight: bold; color: #d4af37;">$${(item.price * item.quantity).toFixed(2)}</span>
+                                    <div style="font-weight: bold; color: #333; margin-bottom: 12px; font-size: 16px;">${item.name}</div>
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                        <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                                            <span style="color: #666; font-weight: 500; font-size: 12px; margin-bottom: 4px;">Quantity:&nbsp;</span>
+                                            <span style="color: #333; font-weight: bold; font-size: 14px;">${item.quantity}</span>
+                                        </div>
+                                        <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                                            <span style="color: #666; font-weight: 500; font-size: 12px; margin-bottom: 4px;">Unit Price:&nbsp;</span>
+                                            <span style="color: #333; font-size: 14px;">$${item.price.toFixed(2)}</span>
+                                        </div>
+                                        <div style="display: flex; flex-direction: column; align-items: flex-start; grid-column: span 2; border-top: 1px solid #ddd; padding-top: 12px; margin-top: 8px;">
+                                            <span style="color: #666; font-weight: 500; font-size: 12px; margin-bottom: 4px;">Line Total:&nbsp;</span>
+                                            <span style="font-weight: bold; color: #d4af37; font-size: 16px;">$${(item.price * item.quantity).toFixed(2)}</span>
+                                        </div>
                                     </div>
                                 </div>
-                            `).join('')}
+                            `).join('')}x
+                        </div>
+
+                        <div style="background-color: #f9f9f9; padding: 15px; border-radius: 8px; margin-bottom: 20px;" class="pricing-breakdown">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <span style="font-weight: bold; color: #555;">Subtotal:</span>
+                                <span style="color: #333;">$${(orderData.totalAmount - orderData.deliveryCharge).toFixed(2)}</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-weight: bold; color: #555;">Delivery Charge:</span>
+                                <span style="color: #333;">${orderData.deliveryCharge} Taka</span>
+                            </div>
                         </div>
 
                         <div style="background-color: #d4af37; color: white; padding: 15px; border-radius: 8px; text-align: center; font-size: 18px; font-weight: bold;">
@@ -221,6 +275,20 @@ export const createOrder = async (orderData: any) => {
                     @media (max-width: 600px) {
                         .table-container { display: none !important; }
                         .mobile-cards { display: block !important; }
+                        .pricing-breakdown {
+                            display: flex !important;
+                            flex-direction: column !important;
+                            gap: 8px !important;
+                        }
+                        .pricing-breakdown > div {
+                            display: flex !important;
+                            justify-content: space-between !important;
+                            align-items: center !important;
+                        }
+                    }
+                    @media (min-width: 601px) {
+                        .mobile-cards { display: none !important; }
+                        .table-container { display: block !important; }
                     }
                 </style>
             `,

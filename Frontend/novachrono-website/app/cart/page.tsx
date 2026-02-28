@@ -15,7 +15,7 @@ export default function CartPage() {
                 <h1 className="text-3xl font-bold text-white mb-4">Your Cart is Empty</h1>
                 <p className="text-gray-400 mb-8">Looks like you haven't made your choice yet.</p>
                 <Link href="/shop">
-                    <Button size="lg">Start Shopping</Button>
+                    <Button size="lg" className='cursor-pointer'>Start Shopping</Button>
                 </Link>
             </div>
         );
@@ -43,21 +43,22 @@ export default function CartPage() {
 
                             <div className="flex-grow text-center sm:text-left">
                                 <h3 className="text-lg font-medium text-white">{item.name}</h3>
-                                <p className="text-gold-500 font-medium mt-1">${item.price.toLocaleString()}</p>
+                                <p className="text-gray-400 text-sm">Unit Price: ${item.price.toLocaleString()}</p>
+                              
                             </div>
 
                             <div className="flex items-center gap-4">
                                 <div className="flex items-center border border-white/10 rounded-sm">
                                     <button
                                         onClick={() => updateQuantity(item._id, item.quantity - 1)}
-                                        className="p-2 hover:bg-white/5 text-white transition-colors"
+                                        className="p-2 hover:bg-white/5 text-white transition-colors cursor-pointer"
                                     >
                                         <Minus className="w-4 h-4" />
                                     </button>
                                     <span className="w-8 text-center text-white text-sm">{item.quantity}</span>
                                     <button
                                         onClick={() => updateQuantity(item._id, item.quantity + 1)}
-                                        className="p-2 hover:bg-white/5 text-white transition-colors"
+                                        className="p-2 hover:bg-white/5 text-white transition-colors cursor-pointer"
                                     >
                                         <Plus className="w-4 h-4" />
                                     </button>
@@ -65,7 +66,7 @@ export default function CartPage() {
 
                                 <button
                                     onClick={() => removeFromCart(item._id)}
-                                    className="p-2 text-gray-500 hover:text-red-400 transition-colors"
+                                    className="p-2 text-gray-300 hover:text-red-400 transition-colors cursor-pointer"
                                 >
                                     <Trash2 className="w-5 h-5" />
                                 </button>
@@ -84,9 +85,13 @@ export default function CartPage() {
                                 <span>Subtotal</span>
                                 <span className="text-white">${cartTotal.toLocaleString()}</span>
                             </div>
-                            <div className="flex justify-between text-gray-400">
+                            {/* <div className="flex justify-between text-gray-400">
                                 <span>Shipping</span>
-                                <span className="text-white">Free</span>
+                                <span className="text-white">60</span>
+                            </div> */}
+                            <div className="flex justify-between text-gray-400">
+                                <span>Total Items</span>
+                                <span className="text-white">{cart.reduce((sum, item) => sum + item.quantity, 0)}</span>
                             </div>
                         </div>
 
@@ -96,8 +101,8 @@ export default function CartPage() {
                         </div>
 
                         <Link href="/checkout" className="block">
-                            <Button size="lg" className="w-full">
-                                Checkout <ArrowRight className="ml-2 w-4 h-4" />
+                            <Button size="lg" className="w-full cursor-pointer">
+                                Checkout <ArrowRight className="ml-2 w-4 h-4 " />
                             </Button>
                         </Link>
                     </div>

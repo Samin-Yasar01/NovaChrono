@@ -71,6 +71,23 @@ export class CreateOrderDto {
   address: string;
 
   @ApiProperty({
+    description: 'The delivery location',
+    example: 'inside',
+  })
+  @IsString()
+  @IsNotEmpty()
+  deliveryLocation: string;
+
+  @ApiProperty({
+    description: 'The delivery charge',
+    example: 60,
+    minimum: 0,
+  })
+  @IsNumber()
+  @Min(0)
+  deliveryCharge: number;
+
+  @ApiProperty({
     description: 'The list of items in the order',
     type: [OrderItemDto],
   })

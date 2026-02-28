@@ -45,7 +45,14 @@ export default function OrdersPage() {
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Orders</h1>
+                <div className="flex items-center gap-3">
+                    <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Orders - </h1>
+                    {orders && (
+                        <span className="inline-flex items-center rounded-full bg-blue-100 dark:bg-blue-900/30 px-3 py-1 text-sm font-medium text-blue-700 dark:text-blue-400">
+                            {orders.length}
+                        </span>
+                    )}
+                </div>
             </div>
 
             <div className="rounded-xl border border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm overflow-hidden">
@@ -109,13 +116,13 @@ export default function OrdersPage() {
                                                     <select
                                                         value={order.status}
                                                         onChange={(e) => handleStatusChange(order._id, e.target.value)}
-                                                        className="bg-transparent border border-gray-300 dark:border-zinc-700 rounded-lg text-xs py-1 px-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                                                        className="bg-white dark:bg-zinc-800 text-gray-900 dark:text-white border border-gray-300 dark:border-zinc-700 rounded-lg text-xs py-1 px-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
                                                         onClick={(e) => e.stopPropagation()}
                                                     >
-                                                        <option value="pending">Pending</option>
-                                                        <option value="shipped">Shipped</option>
-                                                        <option value="delivered">Delivered</option>
-                                                        <option value="cancelled">Cancelled</option>
+                                                        <option className="bg-white dark:bg-zinc-800 text-gray-900 dark:text-white" value="pending">Pending</option>
+                                                        <option className="bg-white dark:bg-zinc-800 text-gray-900 dark:text-white" value="shipped">Shipped</option>
+                                                        <option className="bg-white dark:bg-zinc-800 text-gray-900 dark:text-white" value="delivered">Delivered</option>
+                                                        <option className="bg-white dark:bg-zinc-800 text-gray-900 dark:text-white" value="cancelled">Cancelled</option>
                                                     </select>
                                                 )}
                                             </div>

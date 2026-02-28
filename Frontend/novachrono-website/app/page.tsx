@@ -14,7 +14,7 @@ export default function Home() {
   const featuredProducts = products?.slice(0, 4) || [];
 
   return (
-    <div className="flex flex-col gap-16 pb-20">
+    <div className="flex flex-col gap-16">
       <Hero />
 
       {/* Featured Collection */}

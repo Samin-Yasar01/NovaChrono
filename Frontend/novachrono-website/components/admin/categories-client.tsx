@@ -48,7 +48,12 @@ export default function CategoriesClient({ initialCategories }: CategoriesClient
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Categories</h1>
+                    <div className="flex items-center gap-3">
+                        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Categories - </h1>
+                        <span className="inline-flex items-center rounded-full bg-blue-100 dark:bg-blue-900/30 px-3 py-1 text-sm font-medium text-blue-700 dark:text-blue-400">
+                            {categories.length}
+                        </span>
+                    </div>
                     <p className="text-sm text-gray-500 dark:text-gray-400">
                         Manage your product categories
                     </p>
