@@ -200,7 +200,7 @@ export default function ProductForm({ initialData, isEdit = false }: ProductForm
                             required
                             value={formData.name}
                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                            className="w-full rounded-lg border border-gray-300 dark:border-zinc-700 bg-transparent px-4 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full rounded-lg border border-gray-300 dark:border-zinc-700 bg-transparent px-4 py-2 text-sm text-gray-900 dark:text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             placeholder="e.g. Wireless Earbuds"
                         />
                     </div>
@@ -217,7 +217,7 @@ export default function ProductForm({ initialData, isEdit = false }: ProductForm
                             required
                             value={formData.price}
                             onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                            className="w-full rounded-lg border border-gray-300 dark:border-zinc-700 bg-transparent px-4 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full rounded-lg border border-gray-300 dark:border-zinc-700 bg-transparent px-4 py-2 text-sm text-gray-900 dark:text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             placeholder="0.00"
                         />
                     </div>
@@ -231,7 +231,7 @@ export default function ProductForm({ initialData, isEdit = false }: ProductForm
                             value={formData.category}
                             onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                             disabled={isLoadingCategories}
-                            className="w-full rounded-lg border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-4 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+                            className="w-full rounded-lg border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-4 py-2 text-sm text-gray-900 dark:text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
                         >
                             <option value="">Select a category...</option>
                             {categories.map((cat) => (
@@ -251,7 +251,7 @@ export default function ProductForm({ initialData, isEdit = false }: ProductForm
                             value={formData.brand}
                             onChange={(e) => setFormData({ ...formData, brand: e.target.value })}
                             disabled={isLoadingBrands}
-                            className="w-full rounded-lg border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-4 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+                            className="w-full rounded-lg border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-4 py-2 text-sm text-gray-900 dark:text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
                         >
                             <option value="">Select a brand...</option>
                             {brands.map((brand) => (
@@ -272,7 +272,7 @@ export default function ProductForm({ initialData, isEdit = false }: ProductForm
                         rows={4}
                         value={formData.description}
                         onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                        className="w-full rounded-lg border border-gray-300 dark:border-zinc-700 bg-transparent px-4 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full rounded-lg border border-gray-300 dark:border-zinc-700 bg-transparent px-4 py-2 text-sm text-gray-900 dark:text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder="Product details..."
                     />
                 </div>

@@ -41,7 +41,7 @@ const Navbar = () => {
                 {/* Logo */}
                 <Link href="/" className="flex items-center gap-2 group">
                     <Watch className="h-8 w-8 text-gold-500 transition-transform group-hover:rotate-12" />
-                    <span className="text-2xl font-bold tracking-tighter text-white">
+                    <span className={cn("text-2xl font-bold tracking-tighter", isScrolled ? "text-white" : "text-gray-700")}>
                         NOVA<span className="text-gold-500">CHRONO</span>
                     </span>
                 </Link>
@@ -54,7 +54,7 @@ const Navbar = () => {
                             href={link.href}
                             className={cn(
                                 'text-sm uppercase tracking-widest font-medium hover:text-gold-500 transition-colors relative',
-                                pathname === link.href ? 'text-gold-500' : 'text-gray-300'
+                                pathname === link.href ? 'text-gold-500' : 'text-gray-600'
                             )}
                         >
                             {link.name}
@@ -70,7 +70,7 @@ const Navbar = () => {
 
                 {/* Actions */}
                 <div className="flex items-center gap-4">
-                    <Link href="/cart" className="relative p-2 text-gray-300 hover:text-gold-500 transition-colors">
+                    <Link href="/cart" className="relative p-2 text-gray-600 hover:text-gold-500 transition-colors">
                         <ShoppingBag className="h-6 w-6" />
                         {cartItemCount > 0 && (
                             <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-gold-500 text-[10px] font-bold text-gunmetal-900 animate-in zoom-in">

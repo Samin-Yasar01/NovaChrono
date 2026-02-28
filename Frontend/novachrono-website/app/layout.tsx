@@ -28,7 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn(inter.className, "bg-gunmetal-900 text-white min-h-screen flex flex-col")}>
+      <body suppressHydrationWarning className={cn(inter.className, "bg-black text-white min-h-screen flex flex-col")}>
         <FacebookPixel />
         <CartProvider>
           <Navbar />

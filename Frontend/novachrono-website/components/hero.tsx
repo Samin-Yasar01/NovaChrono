@@ -42,10 +42,10 @@ const Hero = () => {
 
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
                         <Link href="/shop">
-                            <Button size="lg" className="min-w-[160px]">Shop Collection</Button>
+                            <Button size="lg" className="min-w-[160px] cursor-pointer">Shop Collection</Button>
                         </Link>
                         <Link href="/about">
-                            <Button variant="outline" size="lg" className="min-w-[160px]">Our Story</Button>
+                            <Button variant="outline" size="lg" className="min-w-[160px] cursor-pointer">Our Story</Button>
                         </Link>
                     </div>
                 </motion.div>
