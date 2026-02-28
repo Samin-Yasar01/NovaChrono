@@ -116,13 +116,13 @@ export default function OrdersPage() {
                                                     <select
                                                         value={order.status}
                                                         onChange={(e) => handleStatusChange(order._id, e.target.value)}
-                                                        className="bg-transparent border border-gray-300 dark:border-zinc-700 rounded-lg text-xs py-1 px-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                                                        className="bg-white dark:bg-zinc-800 text-gray-900 dark:text-white border border-gray-300 dark:border-zinc-700 rounded-lg text-xs py-1 px-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
                                                         onClick={(e) => e.stopPropagation()}
                                                     >
-                                                        <option value="pending">Pending</option>
-                                                        <option value="shipped">Shipped</option>
-                                                        <option value="delivered">Delivered</option>
-                                                        <option value="cancelled">Cancelled</option>
+                                                        <option className="bg-white dark:bg-zinc-800 text-gray-900 dark:text-white" value="pending">Pending</option>
+                                                        <option className="bg-white dark:bg-zinc-800 text-gray-900 dark:text-white" value="shipped">Shipped</option>
+                                                        <option className="bg-white dark:bg-zinc-800 text-gray-900 dark:text-white" value="delivered">Delivered</option>
+                                                        <option className="bg-white dark:bg-zinc-800 text-gray-900 dark:text-white" value="cancelled">Cancelled</option>
                                                     </select>
                                                 )}
                                             </div>
