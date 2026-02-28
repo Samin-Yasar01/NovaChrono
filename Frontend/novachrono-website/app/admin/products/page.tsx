@@ -3,8 +3,10 @@
 import useSWR, { mutate } from 'swr';
 import Link from 'next/link';
 import { getProducts, deleteProduct } from '@/actions/products/service';
-import { Plus, Pencil, Trash2, Loader2, Search } from 'lucide-react';
+import { getProductImages } from '@/actions/products/image-service';
+import { Plus, Pencil, Trash2, Loader2, Search, Package } from 'lucide-react';
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 
 interface Product {
     _id: string;
@@ -14,6 +16,51 @@ interface Product {
     category?: { _id: string; name: string } | string; // Can be object (populated) or string
     brand?: { _id: string; name: string } | string; // Can be object (populated) or string
     createdAt: string;
+}
+
+function ProductThumbnail({ productId }: { productId: string }) {
+    const { data: images } = useSWR<any[]>(
+        `product-images-${productId}`,
+        () => getProductImages(productId)
+    );
+    const [hovered, setHovered] = useState(false);
+
+    const firstImage = images?.[0];
+
+    if (!firstImage) {
+        return (
+            <div className="h-10 w-10 rounded-md bg-gray-100 dark:bg-zinc-800 flex items-center justify-center flex-shrink-0">
+                <Package className="h-5 w-5 text-gray-400" />
+            </div>
+        );
+    }
+
+    return (
+        <div
+            className="flex-shrink-0"
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+        >
+            <img
+                src={firstImage.url}
+                alt=""
+                className="h-10 w-10 rounded-md object-cover border border-gray-200 dark:border-zinc-700 cursor-zoom-in"
+            />
+            {hovered && createPortal(
+                <div className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none">
+                    <div className="bg-black/60 absolute inset-0" />
+                    <div className="relative bg-white dark:bg-zinc-900 rounded-xl shadow-2xl p-4 flex flex-col items-center gap-3 max-w-sm w-full mx-4">
+                        <img
+                            src={firstImage.url}
+                            alt=""
+                            className="w-full max-h-80 object-contain rounded-lg"
+                        />
+                    </div>
+                </div>,
+                document.body
+            )}
+        </div>
+    );
 }
 
 export default function ProductsPage() {
@@ -43,7 +90,14 @@ export default function ProductsPage() {
     return (
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Products</h1>
+                <div className="flex items-center gap-3">
+                    <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Products</h1>
+                    {products && (
+                        <span className="inline-flex items-center rounded-full bg-blue-100 dark:bg-blue-900/30 px-3 py-1 text-sm font-medium text-blue-700 dark:text-blue-400">
+                            {products.length}
+                        </span>
+                    )}
+                </div>
                 <Link
                     href="/admin/products/create"
                     className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all"
@@ -100,7 +154,10 @@ export default function ProductsPage() {
                                 filteredProducts?.map((product) => (
                                     <tr key={product._id} className="hover:bg-gray-50 dark:hover:bg-zinc-800/50">
                                         <td className="px-6 py-4 font-medium text-gray-900 dark:text-white">
-                                            {product.name}
+                                            <div className="flex items-center gap-3">
+                                                <ProductThumbnail productId={product._id} />
+                                                <span>{product.name}</span>
+                                            </div>
                                         </td>
                                         <td className="px-6 py-4 text-gray-500 dark:text-gray-400">
                                             {typeof product.brand === 'object' ? product.brand?.name : 'No Brand'}
