@@ -20,6 +20,7 @@ const ProductCard = ({ product }: { product: Product }) => {
     const { addToCart } = useCart();
     const { images } = useProductImages(product._id);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [isImageLoaded, setIsImageLoaded] = useState(false);
 
     // Auto-rotate images every 4 seconds if there are multiple images
     useEffect(() => {
@@ -31,6 +32,11 @@ const ProductCard = ({ product }: { product: Product }) => {
 
         return () => clearInterval(interval);
     }, [images]);
+
+    // Reset image loaded state when the current image changes
+    useEffect(() => {
+        setIsImageLoaded(false);
+    }, [images, currentImageIndex]);
 
     const handleAddToCart = (e: React.MouseEvent) => {
         e.preventDefault();
@@ -62,14 +68,29 @@ const ProductCard = ({ product }: { product: Product }) => {
             >
                 {/* Image Section */}
                 <div className="aspect-square bg-gunmetal-900 relative flex items-center justify-center overflow-hidden">
-                    {currentImage ? (
+                    {images === undefined ? (
+                        // images are still loading — show full skeleton
+                        <div className="absolute inset-0 z-20 flex items-center justify-center bg-gray-300 dark:bg-zinc-700 animate-pulse">
+                            <div className="h-16 w-16 rounded-md bg-gray-200 dark:bg-zinc-600" />
+                        </div>
+                    ) : currentImage ? (
                         <>
                             {/* Product Image */}
-                            <img
-                                src={currentImage.url}
-                                alt={currentImage.name || product.name}
-                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                            />
+                            <div className="absolute inset-0">
+                                {/* Skeleton shown while image loads */}
+                                {!isImageLoaded && (
+                                    <div className="absolute inset-0 z-20 flex items-center justify-center bg-gray-300 dark:bg-zinc-700 animate-pulse">
+                                        <div className="h-16 w-16 rounded-md bg-gray-200 dark:bg-zinc-600" />
+                                    </div>
+                                )}
+
+                                <img
+                                    src={currentImage.url}
+                                    alt={currentImage.name || product.name}
+                                    onLoad={() => setIsImageLoaded(true)}
+                                    className={`absolute inset-0 z-10 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 transition-opacity duration-500 ${isImageLoaded ? 'opacity-100' : 'opacity-0'}`}
+                                />
+                            </div>
 
                             {/* Image Navigation Arrows (visible on hover, only if multiple images) */}
                             {hasMultipleImages && (
@@ -98,7 +119,7 @@ const ProductCard = ({ product }: { product: Product }) => {
                         </>
                     ) : (
                         <>
-                            {/* Placeholder when no images */}
+                            {/* Placeholder when images exist but empty */}
                             <div className="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                             <span className="text-gunmetal-700 font-bold text-6xl select-none group-hover:scale-110 transition-transform duration-500">
                                 NC
