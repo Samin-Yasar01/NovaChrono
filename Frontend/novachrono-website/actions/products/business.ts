@@ -31,7 +31,8 @@ export function useProductImages(productId: string | undefined) {
     );
 
     return {
-        images: data || [],
+        // return `data` directly so callers can distinguish "still loading" (undefined)
+        images: data,
         isLoading,
         isError: error,
     };
