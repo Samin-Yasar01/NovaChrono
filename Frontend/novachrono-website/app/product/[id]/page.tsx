@@ -89,10 +89,10 @@ export default function ProductDetailsPage({
                 {product.name}
               </h1>
               <p className="text-gold-500 text-2xl font-semibold">
-                ${product.price.toLocaleString()}
+                {product.price.toLocaleString()}/-
               </p>
               <p className="text-gray-400 text-lg mt-3">
-                Total: ${totalPrice.toLocaleString()}
+                Total: {totalPrice.toLocaleString()}/-
               </p>
             </div>
 

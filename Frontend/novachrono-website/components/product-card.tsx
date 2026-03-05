@@ -149,7 +149,7 @@ const ProductCard = ({ product }: { product: Product }) => {
                             {typeof product.category === 'object' ? product.category?.name : 'Luxury Series'}
                         </span>
                         <span className="text-white font-semibold tracking-wide">
-                            ${product.price ? product.price.toLocaleString() : 'N/A'}
+                            {product.price ? product.price.toLocaleString() : 'N/A'}/-
                         </span>
                     </div>
                 </div>

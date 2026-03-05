@@ -152,7 +152,7 @@ export default function CheckoutPage() {
                             <div className="space-y-2 mb-6">
                                 <div className="flex justify-between text-gray-400">
                                     <span>Subtotal</span>
-                                    <span className="text-white">${cartTotal.toLocaleString()}</span>
+                                    <span className="text-white">{cartTotal.toLocaleString()}/-</span>
                                 </div>
                                 <div className="flex justify-between text-gray-400">
                                     <span>Delivery Charge</span>
@@ -162,7 +162,7 @@ export default function CheckoutPage() {
 
                             <div className="flex justify-between text-lg font-bold text-white mb-6">
                                 <span>Total Amount</span>
-                                <span className="text-gold-500">${totalWithDelivery.toLocaleString()}</span>
+                                <span className="text-gold-500">{totalWithDelivery.toLocaleString()}/-</span>
                             </div>
 
                             {error && <p className="text-red-400 text-sm mb-4">{error}</p>}
