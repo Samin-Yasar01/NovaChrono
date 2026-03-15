@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import Button from './ui/button';
 import { useCart } from '@/context/cart-context';
 import { useProductImages } from '@/actions/products/business';
+import { computeDiscountedPrice } from '@/lib/discount';
 import { ShoppingBag, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
@@ -14,6 +15,8 @@ interface Product {
     price: number;
     description?: string;
     category?: { _id: string; name: string } | string;
+    discountType?: string | null;
+    discountValue?: number | null;
 }
 
 const ProductCard = ({ product }: { product: Product }) => {
@@ -38,9 +41,12 @@ const ProductCard = ({ product }: { product: Product }) => {
         setIsImageLoaded(false);
     }, [images, currentImageIndex]);
 
+    const discountedPrice = computeDiscountedPrice(product.price, product.discountType, product.discountValue);
+    const effectivePrice = discountedPrice ?? product.price;
+
     const handleAddToCart = (e: React.MouseEvent) => {
         e.preventDefault();
-        addToCart({ _id: product._id, name: product.name, price: product.price, quantity: 1 });
+        addToCart({ _id: product._id, name: product.name, price: effectivePrice, quantity: 1 });
     };
 
     const goToPrevious = (e: React.MouseEvent) => {
@@ -148,9 +154,16 @@ const ProductCard = ({ product }: { product: Product }) => {
                         <span className="text-gray-400 text-sm">
                             {typeof product.category === 'object' ? product.category?.name : 'Luxury Series'}
                         </span>
-                        <span className="text-white font-semibold tracking-wide">
-                            {product.price ? product.price.toLocaleString() : 'N/A'}/-
-                        </span>
+                        <div className="flex flex-col items-end gap-0.5">
+                            {discountedPrice != null && (
+                                <span className="text-gray-500 text-xs line-through">
+                                    {product.price.toLocaleString()}/-
+                                </span>
+                            )}
+                            <span className={`font-semibold tracking-wide ${discountedPrice != null ? 'text-emerald-400' : 'text-white'}`}>
+                                {effectivePrice ? Math.round(effectivePrice).toLocaleString() : 'N/A'}/-
+                            </span>
+                        </div>
                     </div>
                 </div>
             </motion.div>

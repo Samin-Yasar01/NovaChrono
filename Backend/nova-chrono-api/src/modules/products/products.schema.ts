@@ -22,6 +22,12 @@ export class Product {
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Brand' })
   brand?: Brand;
+
+  @Prop({ type: String, enum: ['percentage', 'fixed'], default: null })
+  discountType?: string;
+
+  @Prop({ type: Number, default: null })
+  discountValue?: number;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);

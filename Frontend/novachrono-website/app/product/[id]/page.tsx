@@ -15,6 +15,7 @@ import {
 import Link from "next/link";
 import { useState, use } from "react";
 import { motion } from "framer-motion";
+import { computeDiscountedPrice } from "@/lib/discount";
 
 export default function ProductDetailsPage({
   params,
@@ -27,14 +28,18 @@ export default function ProductDetailsPage({
   const { cart, addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
 
-  const totalPrice = product ? quantity * product.price : 0;
+  const discountedPrice = product
+    ? computeDiscountedPrice(product.price, product.discountType, product.discountValue)
+    : null;
+  const effectivePrice = discountedPrice ?? (product?.price ?? 0);
+  const totalPrice = quantity * effectivePrice;
 
   const handleAddToCart = () => {
     if (product) {
       addToCart({
         _id: product._id,
         name: product.name,
-        price: product.price,
+        price: effectivePrice,
         quantity,
       });
     }
@@ -88,11 +93,27 @@ export default function ProductDetailsPage({
               <h1 className="text-4xl font-bold text-white mb-2">
                 {product.name}
               </h1>
-              <p className="text-gold-500 text-2xl font-semibold">
-                {product.price.toLocaleString()}/-
-              </p>
+              {discountedPrice != null ? (
+                <div className="flex items-center gap-3 flex-wrap">
+                  <span className="text-gold-500 text-2xl font-semibold">
+                    {Math.round(discountedPrice).toLocaleString()}/-
+                  </span>
+                  <span className="text-gray-500 text-lg line-through">
+                    {product.price.toLocaleString()}/-
+                  </span>
+                  <span className="inline-flex items-center text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 uppercase tracking-wide">
+                    {product.discountType === 'percentage'
+                      ? `${product.discountValue}% OFF`
+                      : `${product.discountValue?.toLocaleString()} OFF`}
+                  </span>
+                </div>
+              ) : (
+                <p className="text-gold-500 text-2xl font-semibold">
+                  {product.price.toLocaleString()}/-
+                </p>
+              )}
               <p className="text-gray-400 text-lg mt-3">
-                Total: {totalPrice.toLocaleString()}/-
+                Total: {Math.round(totalPrice).toLocaleString()}/-
               </p>
             </div>
 
