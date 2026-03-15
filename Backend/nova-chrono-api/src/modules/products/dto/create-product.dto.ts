@@ -1,4 +1,4 @@
-import { IsString, IsNumber, Min, Length, IsMongoId, IsOptional } from 'class-validator';
+import { IsString, IsNumber, Min, Length, IsMongoId, IsOptional, IsIn } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateProductDto {
@@ -48,4 +48,26 @@ export class CreateProductDto {
   @IsString()
   @IsMongoId()
   brand?: string;
+
+  @ApiProperty({
+    description: 'Type of discount applied to the product',
+    example: 'percentage',
+    required: false,
+    enum: ['percentage', 'fixed'],
+  })
+  @IsOptional()
+  @IsString()
+  @IsIn(['percentage', 'fixed'])
+  discountType?: string;
+
+  @ApiProperty({
+    description: 'Discount value (% or fixed amount)',
+    example: 20,
+    required: false,
+    minimum: 0,
+  })
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  discountValue?: number;
 }

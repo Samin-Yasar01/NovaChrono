@@ -45,6 +45,7 @@ export default function AdminLayout({
         { name: 'Categories', href: '/admin/categories', icon: Menu },
         { name: 'Brands', href: '/admin/brands', icon: Tag },
         { name: 'Orders', href: '/admin/orders', icon: ShoppingCart },
+        { name: 'Discount', href: '/admin/discount', icon: Tag },
     ];
 
     return (
