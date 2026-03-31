@@ -28,12 +28,12 @@ export default function Home() {
             <Button variant="outline" size="sm">View All</Button>
           </Link>
         </div>
-        {/* ---------------- Eid Special Offer Banner ---------------- */}
+        {/* ---------------- Special Offer Banner ---------------- */}
         <div className="flex justify-center">
           <div className="mt-3 text-center">
             <span className="inline-flex items-center gap-3 bg-gradient-to-r from-gray-300 via-yellow-100 to-yellow-200 text-gunmetal-800 font-bold px-3 py-2 rounded-full shadow-lg ring-1 ring-white/10 transform-gpu transition-transform duration-300 hover:scale-105 motion-safe:animate-pulse">
               <span className="text-2xl">✨</span>
-              <span className="text-2xl">Eid Special Offer! <span className="ml-1 px-2 py-1 text-rose-600 font-extrabold inline-block animate-bounce">20% OFF</span></span>
+              <span className="text-2xl">Special Offer! <span className="ml-1 px-2 py-1 text-rose-600 font-extrabold inline-block animate-bounce">20% OFF</span></span>
             </span>
             <p className="text-xl text-gray-300 font-extrabold mt-3 mb-8">Enjoy 20% OFF on every watch from the listed price.</p>
           </div>
